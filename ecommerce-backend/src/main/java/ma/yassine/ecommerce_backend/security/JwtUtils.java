@@ -51,7 +51,7 @@ public class JwtUtils {
             Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
                     .build()
-                    .parseClaimsJwt(authToken);
+                    .parseClaimsJws(authToken);
                 return true;
         } catch(SecurityException e){
             logger.error("Invalid JWT signature: {}",e.getMessage());

@@ -1,6 +1,7 @@
 package ma.yassine.ecommerce_backend.service;
 
 import ma.yassine.ecommerce_backend.entity.User;
+import ma.yassine.ecommerce_backend.helper.UserDetailsImpl;
 import ma.yassine.ecommerce_backend.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,17 +24,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user=userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not Found with email: "+email));
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail())
-                .password(user.getPassword())
-                .authorities(user.getRoles().stream()
-                        .map(role->role.getName().name())
-                        .toArray(String[]::new))
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(!user.getEnabled())
-                .build();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                "User not found with email: " + email));
+
+        return UserDetailsImpl.build(user);
     }
 }
