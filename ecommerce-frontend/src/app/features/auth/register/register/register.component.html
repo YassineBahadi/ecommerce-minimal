@@ -1,0 +1,166 @@
+<div class="auth-container">
+  <div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+      <div class="col-md-8 col-lg-6">
+        <div class="card auth-card">
+          <div class="card-body p-5">
+            <!-- Logo et titre -->
+            <div class="text-center mb-4">
+              <img src="assets/logo.svg" alt="E-commerce" class="auth-logo mb-3" style="height: 60px;">
+              <h2 class="fw-bold">Créer un compte</h2>
+              <p class="text-muted">Rejoignez notre communauté de shoppers</p>
+            </div>
+
+            <!-- Formulaire d'inscription -->
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <!-- Prénom -->
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Prénom</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="firstName"
+                    placeholder="Jean"
+                    [class.is-invalid]="firstName?.invalid && firstName?.touched">
+                  <div class="invalid-feedback" *ngIf="firstName?.invalid && firstName?.touched">
+                    <span *ngIf="firstName?.errors?.['required']">Le prénom est requis</span>
+                    <span *ngIf="firstName?.errors?.['minlength']">Minimum 2 caractères</span>
+                  </div>
+                </div>
+
+                <!-- Nom -->
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Nom</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="lastName"
+                    placeholder="Dupont"
+                    [class.is-invalid]="lastName?.invalid && lastName?.touched">
+                  <div class="invalid-feedback" *ngIf="lastName?.invalid && lastName?.touched">
+                    <span *ngIf="lastName?.errors?.['required']">Le nom est requis</span>
+                    <span *ngIf="lastName?.errors?.['minlength']">Minimum 2 caractères</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label class="form-label">Adresse email</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input 
+                    type="email" 
+                    class="form-control border-start-0 ps-0" 
+                    formControlName="email"
+                    placeholder="votre@email.com"
+                    [class.is-invalid]="email?.invalid && email?.touched">
+                </div>
+                <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+                  <span *ngIf="email?.errors?.['required']">L'email est requis</span>
+                  <span *ngIf="email?.errors?.['email']">Format d'email invalide</span>
+                </div>
+              </div>
+
+              <!-- Mot de passe -->
+              <div class="mb-3">
+                <label class="form-label">Mot de passe</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    class="form-control border-start-0 ps-0" 
+                    formControlName="password"
+                    placeholder="••••••••"
+                    [class.is-invalid]="password?.invalid && password?.touched">
+                  <button 
+                    class="btn btn-light border" 
+                    type="button"
+                    (click)="togglePasswordVisibility()">
+                    <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+                  <span *ngIf="password?.errors?.['required']">Le mot de passe est requis</span>
+                  <span *ngIf="password?.errors?.['minlength']">Minimum 6 caractères</span>
+                </div>
+              </div>
+
+              <!-- Confirmer mot de passe -->
+              <div class="mb-3">
+                <label class="form-label">Confirmer le mot de passe</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-lock-fill"></i>
+                  </span>
+                  <input 
+                    [type]="showConfirmPassword ? 'text' : 'password'" 
+                    class="form-control border-start-0 ps-0" 
+                    formControlName="confirmPassword"
+                    placeholder="••••••••"
+                    [class.is-invalid]="(confirmPassword?.invalid && confirmPassword?.touched) || registerForm.errors?.['passwordMismatch']">
+                  <button 
+                    class="btn btn-light border" 
+                    type="button"
+                    (click)="toggleConfirmPasswordVisibility()">
+                    <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+                  <span *ngIf="confirmPassword?.errors?.['required']">Veuillez confirmer le mot de passe</span>
+                </div>
+                <div class="invalid-feedback" *ngIf="!confirmPassword?.invalid && registerForm.errors?.['passwordMismatch']">
+                  Les mots de passe ne correspondent pas
+                </div>
+              </div>
+
+              <!-- Conditions d'utilisation -->
+              <div class="mb-4">
+                <div class="form-check">
+                  <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    id="acceptTerms"
+                    formControlName="acceptTerms"
+                    [class.is-invalid]="acceptTerms?.invalid && acceptTerms?.touched">
+                  <label class="form-check-label" for="acceptTerms">
+                    J'accepte les <a href="#" class="text-primary">conditions d'utilisation</a> 
+                    et la <a href="#" class="text-primary">politique de confidentialité</a>
+                  </label>
+                </div>
+                <div class="invalid-feedback d-block" *ngIf="acceptTerms?.invalid && acceptTerms?.touched">
+                  Vous devez accepter les conditions pour continuer
+                </div>
+              </div>
+
+              <!-- Bouton d'inscription -->
+              <button 
+                type="submit" 
+                class="btn btn-primary w-100 py-2 mb-3"
+                [disabled]="isLoading">
+                <span *ngIf="!isLoading">Créer mon compte</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Inscription en cours...
+                </span>
+              </button>
+
+              <!-- Lien de connexion -->
+              <p class="text-center mb-0">
+                Déjà un compte ? 
+                <a routerLink="/auth/login" class="text-primary fw-bold text-decoration-none">
+                  Se connecter
+                </a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

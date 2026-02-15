@@ -1,0 +1,104 @@
+<div class="auth-container">
+  <div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+      <div class="col-md-6 col-lg-5">
+        <div class="card auth-card">
+          <div class="card-body p-5">
+            <!-- Logo et titre -->
+            <div class="text-center mb-4">
+              <img src="assets/logo.svg" alt="E-commerce" class="auth-logo mb-3" style="height: 60px;">
+              <h2 class="fw-bold">Content de vous revoir !</h2>
+              <p class="text-muted">Connectez-vous pour continuer vos achats</p>
+            </div>
+
+            <!-- Formulaire de connexion -->
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <!-- Email -->
+              <div class="mb-3">
+                <label class="form-label">Adresse email</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input 
+                    type="email" 
+                    class="form-control border-start-0 ps-0" 
+                    formControlName="email"
+                    placeholder="votre@email.com"
+                    [class.is-invalid]="email?.invalid && email?.touched">
+                </div>
+                <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+                  <span *ngIf="email?.errors?.['required']">L'email est requis</span>
+                  <span *ngIf="email?.errors?.['email']">Format d'email invalide</span>
+                </div>
+              </div>
+
+              <!-- Mot de passe -->
+              <div class="mb-3">
+                <label class="form-label">Mot de passe</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    class="form-control border-start-0 ps-0" 
+                    formControlName="password"
+                    placeholder="••••••••"
+                    [class.is-invalid]="password?.invalid && password?.touched">
+                  <button 
+                    class="btn btn-light border" 
+                    type="button"
+                    (click)="togglePasswordVisibility()">
+                    <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+                  <span *ngIf="password?.errors?.['required']">Le mot de passe est requis</span>
+                  <span *ngIf="password?.errors?.['minlength']">Minimum 6 caractères</span>
+                </div>
+              </div>
+
+              <!-- Options supplémentaires -->
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                  <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    id="rememberMe"
+                    formControlName="rememberMe">
+                  <label class="form-check-label" for="rememberMe">
+                    Se souvenir de moi
+                  </label>
+                </div>
+                <a routerLink="/forgot-password" class="text-decoration-none small">
+                  Mot de passe oublié ?
+                </a>
+              </div>
+
+              <!-- Bouton de connexion -->
+              <button 
+                type="submit" 
+                class="btn btn-primary w-100 py-2 mb-3"
+                [disabled]="isLoading">
+                <span *ngIf="!isLoading">Se connecter</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Connexion en cours...
+                </span>
+              </button>
+
+              <!-- Lien d'inscription -->
+              <p class="text-center mb-0">
+                Pas encore de compte ? 
+                <a routerLink="/auth/register" class="text-primary fw-bold text-decoration-none">
+                  Créer un compte
+                </a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
